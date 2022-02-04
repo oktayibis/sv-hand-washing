@@ -1,30 +1,40 @@
 <script>
-	export let name;
+	import HowTo from "./Howto.svelte"
+	import Progress from "./Progress.svelte"
+	import Timer from "./Timer.svelte"
+
+	// variables
+	let title = "Washing Hand Timer"
+	let startSecond = 0
+	let timer = null
+    function incSecond() {
+       startSecond++
+    }
+    function start() {
+		if(!timer) { 
+			timer = setInterval(incSecond, 1000)
+		}
+
+    }
+
+    $: if(startSecond > 19) {
+        clearInterval(timer)
+    }
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+<div class="container">
+	<p class="subtitle color-blue"> {title}</p>
+	<Timer second={startSecond} />
+	<button disabled={!!timer} on:click={start} class="button"> Start</button>
+
+	<Progress percent={startSecond} />
+	<HowTo />
+</div>
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	.color-blue {
+		color: blue;
 	}
 </style>
